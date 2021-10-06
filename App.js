@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet, Image, Button, Alert } from 'react-native';
 import image from './assets/diamante-rojo.jpg'
 
 const App = () => {
@@ -15,6 +15,12 @@ const App = () => {
         style={styles.image}
       />
 
+      <Button
+        color='blue'
+        title="Press"
+        onPress={()=>Alert.alert('hola!!')}
+      />
+
     </View >
   );
 };
@@ -27,7 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#292929',
   },
   title: { fontSize: 30, color: '#ffff' },
-  image: { height: 200, width: 200 }
+  image: { height: 200, width: 200, borderRadius:100 }
 })
 
 export default App;
