@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View, StyleSheet, Image} from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native';
+import image from './assets/diamante-rojo.jpg'
 
 const App = () => {
   return(
@@ -9,6 +10,11 @@ const App = () => {
         source={{uri: 'https://picsum.photos/200/200'}}
         style={styles.image}
       />
+      <Image
+        source={image}
+        style={styles.image}
+      />
+
     </View >
   );
 };
