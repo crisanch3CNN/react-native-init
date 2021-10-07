@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet, Image, Button, Alert, TouchableOpacity } from 'react-native';
 import image from './assets/diamante-rojo.jpg';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
 
 
 const App = () => {
 
+  const [selectedImage, setselectedImage] = useState(null)
 
   let openImagePickerAsync = async() => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -17,14 +17,32 @@ const App = () => {
     }
     
     const pickerResult = await ImagePicker.launchImageLibraryAsync()
-    console.log(pickerResult);
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+    setselectedImage({localUri: pickerResult.uri})
   }
 
   return(
     <View style={styles.container}>
-      <Text style={styles.title}>Hola mundo Crisanch!</Text>
+      <Text style={styles.title}>Selecciona una imagen:</Text>
       <Image
-        source={{uri: 'https://picsum.photos/200/200'}}
+        source={{
+          uri: selectedImage !== null ?
+            selectedImage.localUri
+            :'https://picsum.photos/200/200'
+        }}
+        style={styles.image}
+      />
+      <TouchableOpacity
+        onPress={openImagePickerAsync}
+        style={ styles.button}
+      >
+        <Text style={ styles.buttonText}>Press Me</Text>
+      </TouchableOpacity>
+      <Image
+        source={image}
         style={styles.image}
       />
         <Button
@@ -32,18 +50,8 @@ const App = () => {
           title="Press"
           onPress={()=>Alert.alert('hola azul!!')}
         />
-      <Image
-        source={image}
-        style={styles.image}
-      />
 
 
-      <TouchableOpacity
-        onPress={openImagePickerAsync}
-        style={ styles.button}
-      >
-        <Text style={ styles.buttonText}>Press Me</Text>
-      </TouchableOpacity>
 
     </View >
   );
