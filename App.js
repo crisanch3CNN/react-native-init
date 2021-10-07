@@ -1,8 +1,25 @@
 import React from "react";
 import { Text, View, StyleSheet, Image, Button, Alert, TouchableOpacity } from 'react-native';
-import image from './assets/diamante-rojo.jpg'
+import image from './assets/diamante-rojo.jpg';
+import * as ImagePicker from 'expo-image-picker';
+import { useState } from 'react';
+
 
 const App = () => {
+
+
+  let openImagePickerAsync = async() => {
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    
+    if (permissionResult.granted === false) {
+      alert('Permisos a la cámara es requerido');
+      return;
+    }
+    
+    const pickerResult = await ImagePicker.launchImageLibraryAsync()
+    console.log(pickerResult);
+  }
+
   return(
     <View style={styles.container}>
       <Text style={styles.title}>Hola mundo Crisanch!</Text>
@@ -22,7 +39,7 @@ const App = () => {
 
 
       <TouchableOpacity
-        onPress={() => Alert.alert('hola verde!!')}
+        onPress={openImagePickerAsync}
         style={ styles.button}
       >
         <Text style={ styles.buttonText}>Press Me</Text>
