@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, Image, Button, Alert, TouchableOpacity } from 'react-native';
-import image from './assets/diamante-rojo.jpg';
 import * as ImagePicker from 'expo-image-picker';
+import * as Sharing from 'expo-sharing';
 
 
 const App = () => {
@@ -24,34 +24,38 @@ const App = () => {
     setselectedImage({localUri: pickerResult.uri})
   }
 
+  const openShareDialog = async () => {
+    if (!(await Sharing.isAvailableAsync())) {
+      alert('Compartir,  no está disponible en tu pataforma.');
+      return;
+    }
+    await Sharing.shareAsync(selectedImage.localUri);
+  }
+
   return(
     <View style={styles.container}>
       <Text style={styles.title}>Selecciona una imagen:</Text>
-      <Image
-        source={{
-          uri: selectedImage !== null ?
-            selectedImage.localUri
-            :'https://picsum.photos/200/200'
-        }}
-        style={styles.image}
-      />
       <TouchableOpacity
         onPress={openImagePickerAsync}
-        style={ styles.button}
       >
-        <Text style={ styles.buttonText}>Press Me</Text>
-      </TouchableOpacity>
-      <Image
-        source={image}
-        style={styles.image}
-      />
-        <Button
-          color='blue'
-          title="Press"
-          onPress={()=>Alert.alert('hola azul!!')}
+        <Image
+          source={{
+            uri: selectedImage !== null ?
+              selectedImage.localUri
+              :'https://picsum.photos/200/200'
+          }}
+          style={styles.image}
         />
-
-
+      </TouchableOpacity>
+      {selectedImage ? (
+        <TouchableOpacity
+          onPress={openShareDialog}
+          style={ styles.button}
+        >
+          <Text style={ styles.buttonText}>Compartir la imagen</Text>
+        </TouchableOpacity>) : (
+          <View />
+      )}
 
     </View >
   );
